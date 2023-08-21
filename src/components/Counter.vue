@@ -1,11 +1,17 @@
 <template>
   <h2>Counter</h2>
-  <p>10</p>
+  <p>{{ counter }} <sup>2</sup> =  {{ counter * counter}}</p>
 </template>
 
 <script>
 export default {
 //  name: 'FirstCompoment'
+  data() {
+    return{
+      //propiety with a value
+      counter: 5
+    }
+  }
 }
 </script>
 
