@@ -1,20 +1,32 @@
 <template>
-  <h2>Counter</h2>
-  <p>{{ counter }} <sup>2</sup> =  {{ counter * counter }}</p>
+  <h2>{{ customTitle }}</h2>
+  <p>{{ counter }} <sup>2</sup> =  {{ squareCounter }}</p>
 
   <div>
     <button @click="increase">+1</button>
-    <button v-on:click="decrease">-1</button>
+    <button @click="decrease">-1</button>
   </div>
 </template>
 
 <script>
 export default {
+  //Aquí es posen les properties habitualment. Si no es troben aquí, són atributs.
+  props: {
+    title: String,
+    start: {
+      type: Number,
+      default: 100,
+      //required: true,
+      validator (value) {
+        return value >= 0
+      }
+    },
+  },
 //  name: 'FirstCompoment'
   data() {
     return{
       //propiety with a value
-      counter: 5
+      counter: this.start
     }
   },
   methods: {
@@ -35,6 +47,11 @@ export default {
       console.log('computed squareCounter')
       //només es recalcula quan el counter canvia internament
       return this.counter * this.counter
+    },
+    customTitle() {
+      //return this.title
+      //return this.title ? this.title : 'Counter'
+      return this.title || 'Counter'
     }
   }
 }
