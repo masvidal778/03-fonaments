@@ -2,14 +2,33 @@
 export default {
   data() {
     return{
-      question: 'Hola món'
+      question: null,
+      answer: null,
+      img: null,
+      isValidQuestion: false
+    }
+  },
+  methods: {
+    async getAnswer(){
+      this.answer = "Pensant"
+
+      const {answer, image} = await fetch('https://yesno.wtf/api').then( r => r.json())
+
+      this.answer = answer === 'yes' ? 'Sí!':'No!'
+      this.img = image
     }
   },
   watch: {
     question(value, oldValue){
+
+      this.isValidQuestion = false
+
       if(!value.includes('?')) return
 
+      this.isValidQuestion = true
+
       //TODO: Realizar petición HTTP
+      this.getAnswer()
     }
   }
 }
@@ -17,7 +36,7 @@ export default {
 </script>
 
 <template>
-  <img src="https://via.placeholder.com/250" alt="bg">
+  <img v-if="img" :src="img" alt="bg">
   <div class="bg-dark"></div>
 
   <div class="indecision-container">
@@ -29,9 +48,9 @@ export default {
     >
     <p>Recorda acabar amb un signe d'interrogació (?)</p>
 
-    <div>
+    <div v-if="isValidQuestion">
       <h2>{{ question }}</h2>
-      <h1>Sí, No, ... pensant</h1>
+      <h1>{{ answer }}</h1>
     </div>
 
   </div>
