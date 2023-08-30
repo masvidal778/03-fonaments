@@ -19,10 +19,24 @@ describe('Counter Component', () => {
 
         expect( wrapper.find('h2').exists() ).toBeTruthy()
 
-        //find buscarà el primer element, findAll tots els h2 que hi hagi
         const h2Value = wrapper.find('h2').text()
 
         expect( h2Value ).toBe('Counter')
+
+    })
+
+    test('El valor per defecte ha de ser 100 al p', () => {
+
+        //Wrapper
+        const wrapper = shallowMount( Counter )
+
+        //pTags
+        //const pValue = wrapper.findAll('p')
+        const value = wrapper.find('[data-testid="counter"]').text()
+
+        //Expect segon p === 100
+        //expect(  pValue[1].text().toBe('100')
+        expect( value ).toBe("100")
 
     })
 
