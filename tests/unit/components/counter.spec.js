@@ -4,6 +4,16 @@ import {shallowMount, mount} from '@vue/test-utils'
 import Counter from '@/components/Counter.vue'
 describe('Counter Component', () => {
 
+    let wrapper = shallowMount( Counter )
+
+    beforeEach( () => {
+
+        wrapper = shallowMount( Counter )
+
+    } )
+
+
+    //TESTS PER VERIFICAR HTML
     // test('ha de coincidir amb la captura', () => {
 
     //    const wrapper = shallowMount( Counter )
@@ -15,8 +25,6 @@ describe('Counter Component', () => {
     //Verificar el valor de l'etiqueta HTML
     test('H2 ha de tenir el valor per defecte "Counter"', () => {
 
-        const wrapper = shallowMount( Counter )
-
         expect( wrapper.find('h2').exists() ).toBeTruthy()
 
         const h2Value = wrapper.find('h2').text()
@@ -26,9 +34,6 @@ describe('Counter Component', () => {
     })
 
     test('El valor per defecte ha de ser 100 al p', () => {
-
-        //Wrapper
-        const wrapper = shallowMount( Counter )
 
         //pTags
         //const pValue = wrapper.findAll('p')
@@ -45,22 +50,51 @@ describe('Counter Component', () => {
     //Cal fer-la async per poder usar await i esperar a què renderitzi
     test("Ha d'incrementar i decrementar en 1 el comptador", async () => {
 
-        const wrapper = shallowMount( Counter )
+        //Arrange
+        const [buttonIncrease, buttonDecrease] = wrapper.findAll('button')
 
-        const btnIncreaseDecrease = wrapper.findAll('button')
+        //Act
+        await buttonIncrease.trigger('click')
+        await buttonIncrease.trigger('click')
+        await buttonIncrease.trigger('click')
+        await buttonDecrease.trigger('click')
+        await buttonDecrease.trigger('click')
 
-        await btnIncreaseDecrease[0].trigger('click')
-        await btnIncreaseDecrease[0].trigger('click')
-        await btnIncreaseDecrease[0].trigger('click')
-
-        await btnIncreaseDecrease[1].trigger('click')
-        await btnIncreaseDecrease[1].trigger('click')
-
+        //Assert
         const value = wrapper.find('[data-testid="counter"]').text()
 
         expect(value).toBe('101')
 
     })
 
+    //TEST PER VERIFICAR DE L'SCRIPT
+    //Llegir props des de proves
+    test("Ha d'establir el valor per defecte", () => {
+
+        //const startProps = wrapper.props('start')
+        //console.log( typeof startProps )
+
+        const { start } = wrapper.props()
+
+        const value = wrapper.find('[data-testid="counter"]').text()
+
+        expect(+value).toBe( start )
+
+    })
+
+    //Assegurar que rebem el title com una propietat, llegir el valor i assegurar que es mostra a customTitle
+    test('ha de mostrar la prop title', () =>{
+
+        const title = 'Hola!!'
+
+        const wrapper = shallowMount( Counter, {
+            props:{
+                title,
+            }
+        } )
+
+        expect(wrapper.find('h2').text()).toBe(title)
+
+    })
 
 })
