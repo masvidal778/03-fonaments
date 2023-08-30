@@ -40,4 +40,27 @@ describe('Counter Component', () => {
 
     })
 
+    //simular events
+    //Si algú fa click al botó incrementar el valor del counter ha de canviar
+    //Cal fer-la async per poder usar await i esperar a què renderitzi
+    test("Ha d'incrementar i decrementar en 1 el comptador", async () => {
+
+        const wrapper = shallowMount( Counter )
+
+        const btnIncreaseDecrease = wrapper.findAll('button')
+
+        await btnIncreaseDecrease[0].trigger('click')
+        await btnIncreaseDecrease[0].trigger('click')
+        await btnIncreaseDecrease[0].trigger('click')
+
+        await btnIncreaseDecrease[1].trigger('click')
+        await btnIncreaseDecrease[1].trigger('click')
+
+        const value = wrapper.find('[data-testid="counter"]').text()
+
+        expect(value).toBe('101')
+
+    })
+
+
 })
